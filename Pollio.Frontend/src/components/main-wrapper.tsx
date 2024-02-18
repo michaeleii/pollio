@@ -1,5 +1,5 @@
 export default function MainWrapper({ children }: MainWrapperProps) {
-  return <main className="p-5">{children}</main>;
+  return <main className="p-5 max-w-7xl mx-auto">{children}</main>;
 }
 
 type MainWrapperProps = {
