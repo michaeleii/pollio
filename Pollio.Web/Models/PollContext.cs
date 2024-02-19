@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Pollio.Web.Models;
 
-public class AppContext(DbContextOptions<AppContext> options) : DbContext(options)
+public class PollContext(DbContextOptions<PollContext> options) : DbContext(options)
 {
     public DbSet<Poll> Polls => Set<Poll>();
     public DbSet<Option> Options => Set<Option>();
