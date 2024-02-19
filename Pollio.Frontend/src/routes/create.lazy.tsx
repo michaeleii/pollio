@@ -46,11 +46,11 @@ function CreatePollForm() {
   return (
     <Card>
       <form>
-        <CardHeader></CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 pt-6">
             <div>
               <Input
+                required
                 placeholder="Enter your question here..."
                 type="text"
                 id="question"
@@ -87,7 +87,7 @@ function OptionInputList({
 }) {
   const enableDelete = options.length > 2;
   return (
-    <div className="grid gap-2 my-4">
+    <div className="grid gap-2 mb-4">
       {options.map((opt) => (
         <OptionInput
           key={opt.id}
@@ -127,6 +127,7 @@ function OptionInput({
   return (
     <div className="flex gap-2 items-center">
       <Input
+        required
         type="text"
         placeholder="Enter an option..."
         value={option}
