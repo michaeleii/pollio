@@ -6,14 +6,9 @@ namespace Pollio.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VoteController : ControllerBase
+    public class VoteController(PollContext context) : ControllerBase
     {
-        private readonly PollContext _context;
-
-        public VoteController(PollContext context)
-        {
-            _context = context;
-        }
+        private readonly PollContext _context = context;
 
         // GET: api/Vote
         [HttpGet]
