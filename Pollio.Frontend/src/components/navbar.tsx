@@ -3,15 +3,18 @@ import { BarChartHorizontalBig } from "lucide-react";
 
 export default function Navbar() {
   return (
-    <header className="p-4 flex gap-2 items-baseline justify-between shadow-md mb-6">
-      <div className="flex items-center gap-2">
-        <BarChartHorizontalBig />
-        <span className="text-xl">Pollio</span>
+    <header className="p-4 shadow-md mb-6">
+      <div className="max-w-7xl mx-auto flex gap-2 items-center justify-between">
+        <Link to="/">
+          <div className="flex items-center gap-2">
+            <BarChartHorizontalBig />
+            <span className="text-xl">Pollio</span>
+          </div>
+        </Link>
+        <nav className="flex items-center gap-6">
+          <Link to="/create">Create Poll</Link>
+        </nav>
       </div>
-      <nav className="flex items-center gap-6">
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-      </nav>
     </header>
   );
 }

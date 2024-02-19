@@ -41,6 +41,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
+import { OptionList } from "@/components/option";
 
 function PollItem({ poll }: { poll: Poll }) {
   return (
@@ -52,16 +53,7 @@ function PollItem({ poll }: { poll: Poll }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-2">
-          {poll.options.map((opt) => (
-            <div
-              key={opt.id}
-              className="border p-5 hover:border-primary hover:border-2 transition-colors cursor-pointer"
-            >
-              {opt.text}
-            </div>
-          ))}
-        </div>
+        <OptionList options={poll.options} />
       </CardContent>
     </Card>
   );
