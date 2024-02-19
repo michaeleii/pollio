@@ -37,10 +37,10 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatDate } from "@/lib/utils";
 
 const fakeOptions = [
   { id: 1, text: "Option 1" },
@@ -54,7 +54,7 @@ function PollItem({ poll }: { poll: Poll }) {
       <CardHeader>
         <CardTitle>{poll.question}</CardTitle>
         <CardDescription>
-          {poll.user.username} • {poll.createdAt}
+          {poll.user.username} • {formatDate(poll.createdAt)}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -69,7 +69,6 @@ function PollItem({ poll }: { poll: Poll }) {
           ))}
         </div>
       </CardContent>
-      <CardFooter></CardFooter>
     </Card>
   );
 }
