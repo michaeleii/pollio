@@ -10,6 +10,6 @@ public class User
     public string Password { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
 
-    public ICollection<Poll> Polls { get; set; }
-    public ICollection<Vote> Votes { get; set; }
+    public ICollection<Poll> Polls { get; set; } = [];
+    public ICollection<Vote> Votes { get; set; } = [];
 }

@@ -9,6 +9,6 @@ public class Poll
     public string Question { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public int UserId { get; set; }
-    public User User { get; set; }
-    public ICollection<Option> Options { get; set; }
+    public User User { get; set; } = null!;
+    public ICollection<Option> Options { get; set; } = [];
 }

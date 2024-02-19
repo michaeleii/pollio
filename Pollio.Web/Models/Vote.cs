@@ -11,6 +11,6 @@ public class Vote
     [Key, Column(Order = 1)]
     public int OptionId { get; set; }
     public DateTime CreatedAt { get; set; }
-    public User User { get; set; }
-    public Option Option { get; set; }
+    public User User { get; set; } = null!;
+    public Option Option { get; set; } = null!;
 }

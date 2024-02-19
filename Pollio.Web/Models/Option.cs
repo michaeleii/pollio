@@ -8,7 +8,7 @@ public class Option
     public string Text { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public int PollId { get; set; }
-    public Poll Poll { get; set; }
-    public ICollection<Vote> Votes { get; set; }
+    public Poll Poll { get; set; } = null!;
+    public ICollection<Vote> Votes { get; set; } = [];
 
 }
