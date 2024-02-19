@@ -79,12 +79,6 @@ public class PollContext(DbContextOptions<PollContext> options) : DbContext(opti
 
     protected void SeedDatabase(ModelBuilder modelBuilder)
     {
-        // Seed initial data
-        if (Polls.Any())
-        {
-            return;
-        }
-
         modelBuilder.Entity<User>().HasData(
             new User { Id = 1, Username = "john", Password = "john123$", Email = "john123@email.com" },
             new User { Id = 2, Username = "jane", Password = "jane123$", Email = "jane123@email.com" },
