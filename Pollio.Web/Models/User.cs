@@ -6,7 +6,7 @@ public class User
     public string Username { get; set; } = null!;
     public string Password { get; set; } = null!;
     public string Email { get; set; } = null!;
-    public ICollection<Poll> Polls { get; set; } = [];
-    public ICollection<Vote> Votes { get; set; } = [];
+    public virtual ICollection<Poll> Polls { get; set; } = [];
+    public virtual ICollection<Vote> Votes { get; set; } = [];
     public DateTime CreatedAt { get; set; }
 }
