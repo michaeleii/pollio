@@ -1,9 +1,19 @@
 export interface Poll {
   id: number;
   question: string;
-  author: User;
-  authorId: number;
-  options: Option[];
+  createdAt: string;
+  user: {
+    id: number;
+    username: string;
+    createdAt: string;
+  };
+}
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  polls: Poll[];
   votes: Vote[];
   createdAt: Date;
 }
@@ -15,16 +25,6 @@ export interface Option {
   pollId: number;
   votes: Vote[];
   voteCount: number;
-  createdAt: Date;
-}
-
-export interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  polls: Poll[];
-  votes: Vote[];
   createdAt: Date;
 }
 

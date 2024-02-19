@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pollio.Web.DTO;
 using Pollio.Web.Models;
 
 namespace Pollio.Web.Controllers
@@ -22,9 +23,22 @@ namespace Pollio.Web.Controllers
 
         // GET: api/Poll
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Poll>>> GetPolls()
+        public async Task<ActionResult<IEnumerable<PollDTO>>> GetPolls()
         {
-            return await _context.Polls.Include(poll => poll.User).ToListAsync();
+            return await _context.Polls
+                .Include(p => p.User)
+                .Select(p => new PollDTO
+                {
+                    Id = p.Id,
+                    Question = p.Question,
+                    CreatedAt = p.CreatedAt,
+                    User = new PollDTO.UserDTO
+                    {
+                        Id = p.User.Id,
+                        Username = p.User.Username,
+                    }
+                })
+                .ToListAsync();
         }
 
         // GET: api/Poll/5

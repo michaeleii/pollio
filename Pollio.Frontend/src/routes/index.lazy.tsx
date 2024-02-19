@@ -53,7 +53,9 @@ function PollItem({ poll }: { poll: Poll }) {
     <Card>
       <CardHeader>
         <CardTitle>{poll.question}</CardTitle>
-        <CardDescription>John Doe • 1 min ago</CardDescription>
+        <CardDescription>
+          {poll.user.username} • {poll.createdAt}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-2">
@@ -67,11 +69,7 @@ function PollItem({ poll }: { poll: Poll }) {
           ))}
         </div>
       </CardContent>
-      <CardFooter>
-        <p className="text-sm text-gray-500 dark:text-gray-200">
-          Total Votes: 12
-        </p>
-      </CardFooter>
+      <CardFooter></CardFooter>
     </Card>
   );
 }
