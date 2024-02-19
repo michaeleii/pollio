@@ -24,11 +24,11 @@ namespace Pollio.Web.Migrations
 
             modelBuilder.Entity("Pollio.Web.Models.Option", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OptionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OptionId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -42,10 +42,7 @@ namespace Pollio.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("VoteCount")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
+                    b.HasKey("OptionId");
 
                     b.HasIndex("PollId");
 
@@ -54,88 +51,76 @@ namespace Pollio.Web.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            OptionId = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 1,
-                            Text = "C#",
-                            VoteCount = 0
+                            Text = "C#"
                         },
                         new
                         {
-                            Id = 2,
+                            OptionId = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 1,
-                            Text = "Python",
-                            VoteCount = 0
+                            Text = "Python"
                         },
                         new
                         {
-                            Id = 3,
+                            OptionId = 3,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 1,
-                            Text = "Java",
-                            VoteCount = 0
+                            Text = "Java"
                         },
                         new
                         {
-                            Id = 4,
+                            OptionId = 4,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 2,
-                            Text = "Pizza",
-                            VoteCount = 0
+                            Text = "Pizza"
                         },
                         new
                         {
-                            Id = 5,
+                            OptionId = 5,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 2,
-                            Text = "Burger",
-                            VoteCount = 0
+                            Text = "Burger"
                         },
                         new
                         {
-                            Id = 6,
+                            OptionId = 6,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 2,
-                            Text = "Sushi",
-                            VoteCount = 0
+                            Text = "Sushi"
                         },
                         new
                         {
-                            Id = 7,
+                            OptionId = 7,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 3,
-                            Text = "Blue",
-                            VoteCount = 0
+                            Text = "Blue"
                         },
                         new
                         {
-                            Id = 8,
+                            OptionId = 8,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 3,
-                            Text = "Green",
-                            VoteCount = 0
+                            Text = "Green"
                         },
                         new
                         {
-                            Id = 9,
+                            OptionId = 9,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PollId = 3,
-                            Text = "Red",
-                            VoteCount = 0
+                            Text = "Red"
                         });
                 });
 
             modelBuilder.Entity("Pollio.Web.Models.Poll", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PollId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PollId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -146,43 +131,46 @@ namespace Pollio.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("AuthorId");
+                    b.HasKey("PollId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Polls");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            AuthorId = 1,
+                            PollId = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Question = "What is your favorite programming language?"
+                            Question = "What is your favorite programming language?",
+                            UserId = 1
                         },
                         new
                         {
-                            Id = 2,
-                            AuthorId = 2,
+                            PollId = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Question = "What is your favorite food?"
+                            Question = "What is your favorite food?",
+                            UserId = 2
                         },
                         new
                         {
-                            Id = 3,
-                            AuthorId = 3,
+                            PollId = 3,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Question = "What is your favorite color?"
+                            Question = "What is your favorite color?",
+                            UserId = 3
                         });
                 });
 
             modelBuilder.Entity("Pollio.Web.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -201,14 +189,14 @@ namespace Pollio.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            UserId = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "john123@email.com",
                             Password = "john123$",
@@ -216,7 +204,7 @@ namespace Pollio.Web.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            UserId = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "jane123@email.com",
                             Password = "jane123$",
@@ -224,7 +212,7 @@ namespace Pollio.Web.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            UserId = 3,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "scott123@email.com",
                             Password = "scott123$",
@@ -234,11 +222,11 @@ namespace Pollio.Web.Migrations
 
             modelBuilder.Entity("Pollio.Web.Models.Vote", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("VoteId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("VoteId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -254,7 +242,7 @@ namespace Pollio.Web.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("VoteId");
 
                     b.HasIndex("OptionId");
 
@@ -267,7 +255,7 @@ namespace Pollio.Web.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            VoteId = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OptionId = 2,
                             PollId = 1,
@@ -275,7 +263,7 @@ namespace Pollio.Web.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            VoteId = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OptionId = 1,
                             PollId = 1,
@@ -283,7 +271,7 @@ namespace Pollio.Web.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            VoteId = 3,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OptionId = 4,
                             PollId = 2,
@@ -291,7 +279,7 @@ namespace Pollio.Web.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            VoteId = 4,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OptionId = 5,
                             PollId = 2,
@@ -299,7 +287,7 @@ namespace Pollio.Web.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            VoteId = 5,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OptionId = 7,
                             PollId = 3,
@@ -307,7 +295,7 @@ namespace Pollio.Web.Migrations
                         },
                         new
                         {
-                            Id = 6,
+                            VoteId = 6,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OptionId = 8,
                             PollId = 3,
@@ -328,13 +316,13 @@ namespace Pollio.Web.Migrations
 
             modelBuilder.Entity("Pollio.Web.Models.Poll", b =>
                 {
-                    b.HasOne("Pollio.Web.Models.User", "Author")
+                    b.HasOne("Pollio.Web.Models.User", "User")
                         .WithMany("Polls")
-                        .HasForeignKey("AuthorId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Pollio.Web.Models.Vote", b =>

@@ -18,7 +18,7 @@ namespace Pollio.Web.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
@@ -27,27 +27,27 @@ namespace Pollio.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Polls",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    PollId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Question = table.Column<string>(type: "text", nullable: false),
-                    AuthorId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Polls", x => x.Id);
+                    table.PrimaryKey("PK_Polls", x => x.PollId);
                     table.ForeignKey(
-                        name: "FK_Polls_Users_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_Polls_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -55,21 +55,20 @@ namespace Pollio.Web.Migrations
                 name: "Options",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    OptionId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Text = table.Column<string>(type: "text", nullable: false),
                     PollId = table.Column<int>(type: "integer", nullable: false),
-                    VoteCount = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Options", x => x.Id);
+                    table.PrimaryKey("PK_Options", x => x.OptionId);
                     table.ForeignKey(
                         name: "FK_Options_Polls_PollId",
                         column: x => x.PollId,
                         principalTable: "Polls",
-                        principalColumn: "Id",
+                        principalColumn: "PollId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -77,7 +76,7 @@ namespace Pollio.Web.Migrations
                 name: "Votes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    VoteId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PollId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
@@ -86,30 +85,30 @@ namespace Pollio.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Votes", x => x.Id);
+                    table.PrimaryKey("PK_Votes", x => x.VoteId);
                     table.ForeignKey(
                         name: "FK_Votes_Options_OptionId",
                         column: x => x.OptionId,
                         principalTable: "Options",
-                        principalColumn: "Id",
+                        principalColumn: "OptionId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Votes_Polls_PollId",
                         column: x => x.PollId,
                         principalTable: "Polls",
-                        principalColumn: "Id",
+                        principalColumn: "PollId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Votes_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Email", "Password", "Username" },
+                columns: new[] { "UserId", "Email", "Password", "Username" },
                 values: new object[,]
                 {
                     { 1, "john123@email.com", "john123$", "john" },
@@ -119,33 +118,33 @@ namespace Pollio.Web.Migrations
 
             migrationBuilder.InsertData(
                 table: "Polls",
-                columns: new[] { "Id", "AuthorId", "Question" },
+                columns: new[] { "PollId", "Question", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, "What is your favorite programming language?" },
-                    { 2, 2, "What is your favorite food?" },
-                    { 3, 3, "What is your favorite color?" }
+                    { 1, "What is your favorite programming language?", 1 },
+                    { 2, "What is your favorite food?", 2 },
+                    { 3, "What is your favorite color?", 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Options",
-                columns: new[] { "Id", "PollId", "Text", "VoteCount" },
+                columns: new[] { "OptionId", "PollId", "Text" },
                 values: new object[,]
                 {
-                    { 1, 1, "C#", 0 },
-                    { 2, 1, "Python", 0 },
-                    { 3, 1, "Java", 0 },
-                    { 4, 2, "Pizza", 0 },
-                    { 5, 2, "Burger", 0 },
-                    { 6, 2, "Sushi", 0 },
-                    { 7, 3, "Blue", 0 },
-                    { 8, 3, "Green", 0 },
-                    { 9, 3, "Red", 0 }
+                    { 1, 1, "C#" },
+                    { 2, 1, "Python" },
+                    { 3, 1, "Java" },
+                    { 4, 2, "Pizza" },
+                    { 5, 2, "Burger" },
+                    { 6, 2, "Sushi" },
+                    { 7, 3, "Blue" },
+                    { 8, 3, "Green" },
+                    { 9, 3, "Red" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Votes",
-                columns: new[] { "Id", "OptionId", "PollId", "UserId" },
+                columns: new[] { "VoteId", "OptionId", "PollId", "UserId" },
                 values: new object[,]
                 {
                     { 1, 2, 1, 1 },
@@ -162,9 +161,9 @@ namespace Pollio.Web.Migrations
                 column: "PollId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Polls_AuthorId",
+                name: "IX_Polls_UserId",
                 table: "Polls",
-                column: "AuthorId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_OptionId",
