@@ -23,76 +23,119 @@ public static class ModelBuilderExtensions
     }
     public static void ConfigureRelationships(this ModelBuilder modelBuilder)
     {
-        // One poll has many options
-        modelBuilder.Entity<Poll>()
-           .HasMany(p => p.Options)
-           .WithOne(o => o.Poll)
-           .HasForeignKey(o => o.PollId)
-           .OnDelete(DeleteBehavior.Cascade);
+        // Composite key for vote
+        modelBuilder.Entity<Vote>()
+            .HasKey(v => new { v.UserId, v.OptionId });
 
-        // One poll has many votes
-        modelBuilder.Entity<Poll>()
-            .HasMany(p => p.Votes)
-            .WithOne(v => v.Poll)
-            .HasForeignKey(v => v.PollId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-
-        // One user has many polls
+        // A user has many polls
         modelBuilder.Entity<User>()
             .HasMany(u => u.Polls)
             .WithOne(p => p.User)
-            .HasForeignKey(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(p => p.UserId);
 
+        // A poll belongs to one user
+        modelBuilder.Entity<Poll>()
+            .HasOne(p => p.User)
+            .WithMany(u => u.Polls)
+            .HasForeignKey(p => p.UserId);
 
-        // One user has many votes
+        // A user has many votes
         modelBuilder.Entity<User>()
             .HasMany(u => u.Votes)
             .WithOne(v => v.User)
-            .HasForeignKey(v => v.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(v => v.UserId);
 
-        // One option has many votes
+        // A vote belongs to one user
+        modelBuilder.Entity<Vote>()
+            .HasOne(v => v.User)
+            .WithMany(u => u.Votes)
+            .HasForeignKey(v => v.UserId);
+
+        // A poll has many options
+        modelBuilder.Entity<Poll>()
+            .HasMany(p => p.Options)
+            .WithOne(o => o.Poll)
+            .HasForeignKey(o => o.PollId);
+
+        // An option belongs to one poll
+        modelBuilder.Entity<Option>()
+            .HasOne(o => o.Poll)
+            .WithMany(p => p.Options)
+            .HasForeignKey(o => o.PollId);
+
+        // An option has many votes
         modelBuilder.Entity<Option>()
             .HasMany(o => o.Votes)
             .WithOne(v => v.Option)
-            .HasForeignKey(v => v.OptionId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(v => v.OptionId);
+
+        // A vote belongs to one option
+        modelBuilder.Entity<Vote>()
+            .HasOne(v => v.Option)
+            .WithMany(o => o.Votes)
+            .HasForeignKey(v => v.OptionId);
+
     }
+
+
     public static void SeedDatabase(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasData(
-                    new User { UserId = 1, Username = "john", Password = "john123$", Email = "john123@email.com" },
-                    new User { UserId = 2, Username = "jane", Password = "jane123$", Email = "jane123@email.com" },
-                    new User { UserId = 3, Username = "scott", Password = "scott123$", Email = "scott123@email.com" }
-                );
+        // Seed Users
+        var users = new[]
+        {
+        new User { Id = 1, Username = "johndoe", Password = "password", CreatedAt = DateTime.Now },
+        new User { Id = 2, Username = "janedoe", Password = "password", CreatedAt = DateTime.Now },
+        new User { Id = 3, Username = "scottchen", Password = "password", CreatedAt = DateTime.Now },
+        new User { Id = 4, Username = "jerryfan", Password = "password", CreatedAt = DateTime.Now },
+        new User { Id = 5, Username = "mlei6", Password = "password", CreatedAt = DateTime.Now },
+    };
 
-        modelBuilder.Entity<Poll>().HasData(
-            new Poll { PollId = 1, Question = "What is your favorite programming language?", UserId = 1 },
-            new Poll { PollId = 2, Question = "What is your favorite food?", UserId = 2 },
-            new Poll { PollId = 3, Question = "What is your favorite color?", UserId = 3 }
-        );
+        modelBuilder.Entity<User>().HasData(users);
 
-        modelBuilder.Entity<Option>().HasData(
-            new Option { OptionId = 1, Text = "C#", PollId = 1 },
-            new Option { OptionId = 2, Text = "Python", PollId = 1 },
-            new Option { OptionId = 3, Text = "Java", PollId = 1 },
-            new Option { OptionId = 4, Text = "Pizza", PollId = 2 },
-            new Option { OptionId = 5, Text = "Burger", PollId = 2 },
-            new Option { OptionId = 6, Text = "Sushi", PollId = 2 },
-            new Option { OptionId = 7, Text = "Blue", PollId = 3 },
-            new Option { OptionId = 8, Text = "Green", PollId = 3 },
-            new Option { OptionId = 9, Text = "Red", PollId = 3 }
-        );
+        // Seed Polls
+        var polls = new[]
+        {
+        new Poll { Id = 1, Question = "Favorite Color?", CreatedAt = DateTime.Now, UserId = users[0].Id, User = users[0] },
+        new Poll { Id = 2, Question = "Best Programming Language?", CreatedAt = DateTime.Now, UserId = users[1].Id, User = users[1] },
+        new Poll { Id = 3, Question = "Favorite Movie?", CreatedAt = DateTime.Now, UserId = users[2].Id, User = users[2] },
+        new Poll { Id = 4, Question = "Preferred Vacation Destination?", CreatedAt = DateTime.Now, UserId = users[3].Id, User = users[3] },
+        new Poll { Id = 5, Question = "Favorite Food?", CreatedAt = DateTime.Now, UserId = users[4].Id, User = users[4] },
+    };
 
-        modelBuilder.Entity<Vote>().HasData(
-            new Vote { VoteId = 1, UserId = 1, PollId = 1, OptionId = 2 },
-            new Vote { VoteId = 2, UserId = 2, PollId = 1, OptionId = 1 },
-            new Vote { VoteId = 3, UserId = 3, PollId = 2, OptionId = 4 },
-            new Vote { VoteId = 4, UserId = 1, PollId = 2, OptionId = 5 },
-            new Vote { VoteId = 5, UserId = 2, PollId = 3, OptionId = 7 },
-            new Vote { VoteId = 6, UserId = 3, PollId = 3, OptionId = 8 }
-        );
+        modelBuilder.Entity<Poll>().HasData(polls);
+
+        // Seed Options
+        var options = new[]
+        {
+        new Option { Id = 1, Text = "Red", CreatedAt = DateTime.Now, PollId = polls[0].Id, Poll = polls[0] },
+        new Option { Id = 2, Text = "Blue", CreatedAt = DateTime.Now, PollId = polls[0].Id, Poll = polls[0] },
+        new Option { Id = 3, Text = "C#", CreatedAt = DateTime.Now, PollId = polls[1].Id, Poll = polls[1] },
+        new Option { Id = 4, Text = "Python", CreatedAt = DateTime.Now, PollId = polls[1].Id, Poll = polls[1] },
+        new Option { Id = 5, Text = "Action", CreatedAt = DateTime.Now, PollId = polls[2].Id, Poll = polls[2] },
+        new Option { Id = 6, Text = "Comedy", CreatedAt = DateTime.Now, PollId = polls[2].Id, Poll = polls[2] },
+        new Option { Id = 7, Text = "Beach", CreatedAt = DateTime.Now, PollId = polls[3].Id, Poll = polls[3] },
+        new Option { Id = 8, Text = "Mountains", CreatedAt = DateTime.Now, PollId = polls[3].Id, Poll = polls[3] },
+        new Option { Id = 9, Text = "Pizza", CreatedAt = DateTime.Now, PollId = polls[4].Id, Poll = polls[4] },
+        new Option { Id = 10, Text = "Sushi", CreatedAt = DateTime.Now, PollId = polls[4].Id, Poll = polls[4] },
+    };
+
+        modelBuilder.Entity<Option>().HasData(options);
+
+        // Seed Votes
+        var votes = new[]
+        {
+        new Vote {  UserId = users[0].Id, OptionId = options[0].Id, CreatedAt = DateTime.Now, User = users[0], Option = options[0] },
+        new Vote {  UserId = users[1].Id, OptionId = options[2].Id, CreatedAt = DateTime.Now, User = users[1], Option = options[2] },
+        new Vote {  UserId = users[2].Id, OptionId = options[4].Id, CreatedAt = DateTime.Now, User = users[2], Option = options[4] },
+        new Vote {  UserId = users[3].Id, OptionId = options[6].Id, CreatedAt = DateTime.Now, User = users[3], Option = options[6] },
+        new Vote {  UserId = users[4].Id, OptionId = options[8].Id, CreatedAt = DateTime.Now, User = users[4], Option = options[8] },
+        new Vote {  UserId = users[0].Id, OptionId = options[1].Id, CreatedAt = DateTime.Now, User = users[0], Option = options[1] },
+        new Vote {  UserId = users[1].Id, OptionId = options[3].Id, CreatedAt = DateTime.Now, User = users[1], Option = options[3] },
+        new Vote {  UserId = users[2].Id, OptionId = options[5].Id, CreatedAt = DateTime.Now, User = users[2], Option = options[5] },
+        new Vote {  UserId = users[3].Id, OptionId = options[7].Id, CreatedAt = DateTime.Now, User = users[3], Option = options[7] },
+        new Vote {  UserId = users[4].Id, OptionId = options[9].Id, CreatedAt = DateTime.Now, User = users[4], Option = options[9] },
+    };
+
+        modelBuilder.Entity<Vote>().HasData(votes);
     }
 }

@@ -1,12 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Pollio.Web.Models;
 
 public class User
 {
-    public int UserId { get; set; }
+    [Key]
+    public int Id { get; set; }
     public string Username { get; set; } = null!;
     public string Password { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public virtual ICollection<Poll> Polls { get; set; } = [];
-    public virtual ICollection<Vote> Votes { get; set; } = [];
     public DateTime CreatedAt { get; set; }
+
+    public ICollection<Poll> Polls { get; set; }
+    public ICollection<Vote> Votes { get; set; }
 }
