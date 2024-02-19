@@ -42,12 +42,6 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 
-const fakeOptions = [
-  { id: 1, text: "Option 1" },
-  { id: 2, text: "Option 2" },
-  { id: 3, text: "Option 3" },
-];
-
 function PollItem({ poll }: { poll: Poll }) {
   return (
     <Card>
@@ -59,7 +53,7 @@ function PollItem({ poll }: { poll: Poll }) {
       </CardHeader>
       <CardContent>
         <div className="grid gap-2">
-          {fakeOptions.map((opt) => (
+          {poll.options.map((opt) => (
             <div
               key={opt.id}
               className="border p-5 hover:border-primary hover:border-2 transition-colors cursor-pointer"

@@ -36,7 +36,13 @@ namespace Pollio.Web.Controllers
                     {
                         Id = p.User.Id,
                         Username = p.User.Username,
-                    }
+                    },
+                    Options = p.Options.Select(o => new PollDTO.OptionDTO
+                    {
+                        Id = o.Id,
+                        Text = o.Text,
+                        CreatedAt = o.CreatedAt,
+                    }).ToList(),
                 })
                 .ToListAsync();
         }

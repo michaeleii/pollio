@@ -7,6 +7,10 @@ export interface Poll {
     username: string;
     createdAt: string;
   };
+  options: {
+    id: number;
+    text: string;
+  }[];
 }
 export interface User {
   id: number;
