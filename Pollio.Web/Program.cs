@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Pollio.Web.Hubs;
 using Pollio.Web.Models;
 
 DotNetEnv.Env.Load();
@@ -36,5 +37,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.MapHub<PollHub>("/r/pollHub");
 
 app.Run();
