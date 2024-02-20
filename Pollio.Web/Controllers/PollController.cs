@@ -76,37 +76,6 @@ public class PollController(PollContext context) : ControllerBase
         };
     }
 
-    // PUT: api/Poll/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutPoll(int id, Poll poll)
-    {
-        if (id != poll.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(poll).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!PollExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
-    }
-
     // POST: api/Poll
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
@@ -146,11 +115,6 @@ public class PollController(PollContext context) : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
-    }
-
-    private bool PollExists(int id)
-    {
-        return _context.Polls.Any(e => e.Id == id);
     }
 }
 
