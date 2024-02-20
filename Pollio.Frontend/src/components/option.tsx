@@ -69,9 +69,10 @@ export function OptionItem({
           <span>{width}%</span>
         </div>
         <div
-          className="absolute top-0 left-0 w-full h-full bg-primary/20 z-0"
+          className="absolute top-0 left-0 w-full h-full bg-primary/20 z-0 transition-all"
           style={{
             width: `${width}%`,
+            transform: `translateX(${selected === option.id ? 0 : 100}%)`,
           }}
         ></div>
       </div>
@@ -93,7 +94,7 @@ export function OptionItem({
           <span>{width}%</span>
         </div>
         <div
-          className="absolute top-0 left-0 w-full h-full bg-secondary z-0"
+          className="absolute top-0 left-0 w-full h-full bg-secondary z-0 transition-all"
           style={{
             width: `${width}%`,
           }}
