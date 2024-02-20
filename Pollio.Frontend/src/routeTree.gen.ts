@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PollPollIdImport } from './routes/poll.$pollId'
 
 // Create Virtual Routes
 
@@ -31,6 +32,11 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const PollPollIdRoute = PollPollIdImport.update({
+  path: '/poll/$pollId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -43,6 +49,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateLazyImport
       parentRoute: typeof rootRoute
     }
+    '/poll/$pollId': {
+      preLoaderRoute: typeof PollPollIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -51,6 +61,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   CreateLazyRoute,
+  PollPollIdRoute,
 ])
 
 /* prettier-ignore-end */
