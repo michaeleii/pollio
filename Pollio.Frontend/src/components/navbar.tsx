@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { BarChartHorizontalBig } from "lucide-react";
 import { Button } from "./ui/button";
+import { ModeToggle } from "./mode-toggle";
 
 export default function Navbar() {
   return (
@@ -16,6 +17,7 @@ export default function Navbar() {
           <Link to="/create">
             <Button>Create Poll</Button>
           </Link>
+          <ModeToggle />
         </nav>
       </div>
     </header>
