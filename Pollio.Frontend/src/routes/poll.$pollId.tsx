@@ -2,9 +2,10 @@ import Loading from "@/components/loading";
 import MainWrapper from "@/components/main-wrapper";
 import { PollItem } from "@/components/poll";
 import { Button } from "@/components/ui/button";
+import useDeletePoll from "@/hooks/useDeletePoll";
 import { useFetchPoll } from "@/hooks/useFetchPoll";
 import { createFileRoute } from "@tanstack/react-router";
-import { Trash2Icon } from "lucide-react";
+import { Loader2Icon, Trash2Icon } from "lucide-react";
 
 export const Route = createFileRoute("/poll/$pollId")({
   component: SinglePoll,
@@ -13,11 +14,12 @@ export const Route = createFileRoute("/poll/$pollId")({
 function SinglePoll() {
   const { pollId } = Route.useParams();
   const { poll, isPending, error } = useFetchPoll(pollId);
+  const { deletePoll, isDeleting } = useDeletePoll();
   const isOwner = poll?.user.id === 5;
 
   const handleDeletePoll = () => {
     if (confirm("Are you sure you want to delete this poll?")) {
-      // delete poll
+      deletePoll(pollId);
     }
   };
   return (
@@ -32,12 +34,22 @@ function SinglePoll() {
           {isOwner && (
             <div className="mt-6 flex justify-end">
               <Button
+                disabled={isDeleting}
                 onClick={handleDeletePoll}
                 variant="destructive"
                 className="flex items-center gap-2"
               >
-                <Trash2Icon size={18} />
-                <span>Delete Poll</span>
+                {isDeleting ? (
+                  <>
+                    <Loader2Icon className="animate-spin" />
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2Icon size={18} />
+                    <span>Delete Poll</span>
+                  </>
+                )}
               </Button>
             </div>
           )}
