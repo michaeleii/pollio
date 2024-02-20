@@ -32,7 +32,11 @@ export function PollItem({
     <Card>
       <CardHeader>
         {link ? (
-          <Link to="/poll/$pollId" params={{ pollId: poll.id.toString() }}>
+          <Link
+            to="/poll/$pollId"
+            params={{ pollId: poll.id.toString() }}
+            preload={false}
+          >
             <CardTitle>{poll.question}</CardTitle>
           </Link>
         ) : (

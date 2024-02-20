@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type CreatePollSchema = {
   question: string;
@@ -6,6 +6,7 @@ type CreatePollSchema = {
 };
 
 export default function useCreatePoll() {
+  const qc = useQueryClient();
   const { mutate, isPending, error } = useMutation({
     mutationFn: async (poll: CreatePollSchema) => {
       const response = await fetch("/api/poll", {
@@ -16,6 +17,12 @@ export default function useCreatePoll() {
         body: JSON.stringify(poll),
       });
       return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate the poll query
+      qc.invalidateQueries({
+        queryKey: ["polls"],
+      });
     },
   });
   return { createPoll: mutate, isPending, error };

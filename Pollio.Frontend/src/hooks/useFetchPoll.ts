@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useFetchPoll(pollId: string) {
   const { data, error, isPending } = useQuery({
-    queryKey: ["poll", pollId],
+    queryKey: ["polls", pollId],
     queryFn: async () => {
       const response = await fetch(`/api/poll/${pollId}`);
       return response.json() as Promise<Poll>;

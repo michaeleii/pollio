@@ -4,10 +4,10 @@ import { PollItem } from "@/components/poll";
 import { Button } from "@/components/ui/button";
 import useDeletePoll from "@/hooks/useDeletePoll";
 import { useFetchPoll } from "@/hooks/useFetchPoll";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 
-export const Route = createFileRoute("/poll/$pollId")({
+export const Route = createLazyFileRoute("/poll/$pollId")({
   component: SinglePoll,
 });
 
@@ -20,7 +20,7 @@ function SinglePoll() {
 
   const handleDeletePoll = () => {
     if (confirm("Are you sure you want to delete this poll?")) {
-      deletePoll(pollId);
+      deletePoll(+pollId);
       navigate({ from: "/poll/$pollId", to: "/" });
     }
   };

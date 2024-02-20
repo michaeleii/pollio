@@ -19,7 +19,9 @@ export default function useCreateVote() {
     },
     onSuccess: () => {
       // Invalidate the poll query
-      qc.invalidateQueries({ queryKey: ["polls"] });
+      qc.invalidateQueries({
+        queryKey: ["polls"],
+      });
     },
   });
   return { makeVote: mutate, isVoting: isPending, error };

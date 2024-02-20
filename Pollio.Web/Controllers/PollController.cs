@@ -39,7 +39,9 @@ public class PollController(PollContext context) : ControllerBase
                     CreatedAt = o.CreatedAt,
                     Votes = o.Votes.Count,
                     Selected = o.Votes.Any(v => v.UserId == 5 && v.OptionId == o.Id),
-                }).ToList(),
+                })
+                .OrderBy(o => o.Id)
+                .ToList(),
 
             })
             .OrderByDescending(p => p.CreatedAt)
@@ -50,30 +52,41 @@ public class PollController(PollContext context) : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<PollDTO>> GetPoll(int id)
     {
-        var poll = await _context.Polls.FindAsync(id);
+        var poll = await _context.Polls
+                        .Include(p => p.User)
+                        .Select(p => new PollDTO
+                        {
+                            Id = p.Id,
+                            Question = p.Question,
+                            CreatedAt = p.CreatedAt,
+
+                            User = new PollDTO.UserDTO
+                            {
+                                Id = p.User.Id,
+                                Username = p.User.Username,
+                            },
+
+                            TotalVotes = p.Options.Sum(o => o.Votes.Count),
+
+                            Options = p.Options.Select(o => new PollDTO.OptionDTO
+                            {
+                                Id = o.Id,
+                                Text = o.Text,
+                                CreatedAt = o.CreatedAt,
+                                Votes = o.Votes.Count,
+                                Selected = o.Votes.Any(v => v.UserId == 5 && v.OptionId == o.Id),
+                            })
+                            .OrderBy(o => o.Id)
+                            .ToList(),
+
+                        }).Where(p => p.Id == id).FirstOrDefaultAsync();
 
         if (poll == null)
         {
             return NotFound();
         }
 
-        return new PollDTO
-        {
-            Id = poll.Id,
-            Question = poll.Question,
-            CreatedAt = poll.CreatedAt,
-            User = new PollDTO.UserDTO
-            {
-                Id = poll.User.Id,
-                Username = poll.User.Username,
-            },
-            Options = poll.Options.Select(o => new PollDTO.OptionDTO
-            {
-                Id = o.Id,
-                Text = o.Text,
-                CreatedAt = o.CreatedAt,
-            }).ToList(),
-        };
+        return poll;
     }
 
     // POST: api/Poll

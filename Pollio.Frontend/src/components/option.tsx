@@ -1,7 +1,7 @@
 import useCreateVote from "@/hooks/useCreateVote";
 import { cn } from "@/lib/utils";
 import { Poll } from "@/types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type OptionListProps = {
   pollId: Poll["id"];
@@ -10,14 +10,16 @@ type OptionListProps = {
 };
 
 export function OptionList({ pollId, options, totalVotes }: OptionListProps) {
-  const [selected, setSelected] = useState<number | null>(() => {
+  const [selected, setSelected] = useState<number | null>(null);
+
+  useEffect(() => {
     const selected = options.find((opt) => opt.selected);
-    return selected ? selected.id : null;
-  });
+    setSelected(selected ? selected.id : null);
+  }, [options]);
 
   const { makeVote } = useCreateVote();
 
-  function handleSelected(id: number | null) {
+  async function handleSelected(id: number | null) {
     setSelected(id);
     makeVote({ pollId, optionId: id });
   }
