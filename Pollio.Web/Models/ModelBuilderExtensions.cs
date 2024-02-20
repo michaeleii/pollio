@@ -23,10 +23,6 @@ public static class ModelBuilderExtensions
     }
     public static void ConfigureRelationships(this ModelBuilder modelBuilder)
     {
-        // Composite key for vote
-        modelBuilder.Entity<Vote>()
-            .HasKey(v => new { v.UserId, v.OptionId });
-
         // A user has many polls
         modelBuilder.Entity<User>()
             .HasMany(u => u.Polls)
@@ -124,17 +120,17 @@ public static class ModelBuilderExtensions
         // Seed Votes
         var votes = new[]
         {
-            new Vote { UserId = users[0].Id, OptionId = options[0].Id },
-            new Vote { UserId = users[1].Id, OptionId = options[2].Id },
-            new Vote { UserId = users[2].Id, OptionId = options[4].Id },
-            new Vote { UserId = users[3].Id, OptionId = options[6].Id },
-            new Vote { UserId = users[4].Id, OptionId = options[8].Id },
-            new Vote { UserId = users[0].Id, OptionId = options[1].Id },
-            new Vote { UserId = users[1].Id, OptionId = options[3].Id },
-            new Vote { UserId = users[2].Id, OptionId = options[5].Id },
-            new Vote { UserId = users[3].Id, OptionId = options[7].Id },
-            new Vote { UserId = users[4].Id, OptionId = options[9].Id },
-        };
+        new Vote { Id = 1, UserId = users[0].Id, OptionId = options[0].Id },
+        new Vote { Id = 2, UserId = users[1].Id, OptionId = options[0].Id },
+        new Vote { Id = 3, UserId = users[2].Id, OptionId = options[1].Id },
+        new Vote { Id = 4, UserId = users[3].Id, OptionId = options[1].Id },
+        new Vote { Id = 5, UserId = users[4].Id, OptionId = options[2].Id },
+        new Vote { Id = 6, UserId = users[0].Id, OptionId = options[2].Id },
+        new Vote { Id = 7, UserId = users[1].Id, OptionId = options[3].Id },
+        new Vote { Id = 8, UserId = users[2].Id, OptionId = options[3].Id },
+        new Vote { Id = 9, UserId = users[3].Id, OptionId = options[4].Id },
+        new Vote { Id = 10, UserId = users[4].Id, OptionId = options[4].Id},
+    };
 
         modelBuilder.Entity<Vote>().HasData(votes);
     }

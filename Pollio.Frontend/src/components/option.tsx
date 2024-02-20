@@ -4,20 +4,24 @@ import { useState } from "react";
 
 type OptionListProps = {
   options: Poll["options"];
+  totalVotes: number;
 };
 
-export function OptionList({ options }: OptionListProps) {
-  const [selected, setSelected] = useState<number | null>(null);
+export function OptionList({ options, totalVotes }: OptionListProps) {
+  const [selected, setSelected] = useState<number | null>(() => {
+    const selected = options.find((opt) => opt.selected);
+    return selected ? selected.id : null;
+  });
 
   return (
     <div className="grid gap-2">
       {options.map((opt) => (
         <OptionItem
+          totalVotes={totalVotes}
           selected={selected}
           onSelected={setSelected}
           key={opt.id}
-          id={opt.id}
-          option={opt.text}
+          option={opt}
         />
       ))}
     </div>
@@ -25,58 +29,77 @@ export function OptionList({ options }: OptionListProps) {
 }
 
 type OptionItemProps = {
-  id: number;
-  option: string;
+  totalVotes: number;
+  option: Poll["options"][0];
   hover?: boolean;
   selected: number | null;
   onSelected: (id: number | null) => void;
 };
 
 export function OptionItem({
-  id,
   option,
+  totalVotes,
   selected,
   hover = true,
   onSelected,
 }: OptionItemProps) {
-  if (selected === id) {
+  const width = option.votes === 0 ? 0 : (option.votes / totalVotes) * 100;
+  if (selected === option.id) {
     return (
       <div
         onClick={() => onSelected(null)}
         className={cn(
-          "border p-5 transition-colors cursor-pointer border-primary bg-primary",
+          "border p-5 transition-colors cursor-pointer border-primary bg-transparent relative z-10",
           {
             "hover:border-primary hover:border-2": hover,
           }
         )}
       >
-        {option}
+        <div className="z-10 relative flex items-center justify-between">
+          <span>{option.text}</span>
+          <span>{width}%</span>
+        </div>
+        <div
+          className="absolute top-0 left-0 w-full h-full bg-primary/20 z-0"
+          style={{
+            width: `${width}%`,
+          }}
+        ></div>
       </div>
     );
   }
   if (selected) {
     return (
       <div
-        onClick={() => onSelected(id)}
+        onClick={() => onSelected(option.id)}
         className={cn(
-          "border p-5 transition-colors cursor-pointer bg-secondary",
+          "border p-5 transition-colors cursor-pointer bg-transparent relative",
           {
             "hover:border-primary hover:border-2": hover,
           }
         )}
       >
-        {option}
+        <div className="z-10 relative flex items-center justify-between">
+          <span>{option.text}</span>
+          <span>{width}%</span>
+        </div>
+        <div
+          className="absolute top-0 left-0 w-full h-full bg-secondary z-0"
+          style={{
+            width: `${width}%`,
+          }}
+        ></div>
       </div>
     );
   }
   return (
     <div
-      onClick={() => onSelected(id)}
+      onClick={() => onSelected(option.id)}
       className={cn("border p-5 transition-colors cursor-pointer", {
         "hover:border-primary hover:border-2": hover,
       })}
     >
-      {option}
+      {option.text}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -42,8 +43,13 @@ export function PollItem({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <OptionList options={poll.options} />
+        <OptionList totalVotes={poll.totalVotes} options={poll.options} />
       </CardContent>
+      <CardFooter>
+        <p className="text-sm text-muted-foreground pl-2">
+          {poll.totalVotes} Votes
+        </p>
+      </CardFooter>
     </Card>
   );
 }

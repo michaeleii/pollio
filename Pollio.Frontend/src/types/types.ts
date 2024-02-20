@@ -1,6 +1,7 @@
 export interface Poll {
   id: number;
   question: string;
+  totalVotes: number;
   createdAt: string;
   user: {
     id: number;
@@ -10,6 +11,8 @@ export interface Poll {
   options: {
     id: number;
     text: string;
+    selected: boolean;
+    votes: number;
   }[];
 }
 export interface User {
