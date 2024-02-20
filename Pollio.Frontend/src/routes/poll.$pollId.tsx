@@ -4,7 +4,7 @@ import { PollItem } from "@/components/poll";
 import { Button } from "@/components/ui/button";
 import useDeletePoll from "@/hooks/useDeletePoll";
 import { useFetchPoll } from "@/hooks/useFetchPoll";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 
 export const Route = createFileRoute("/poll/$pollId")({
@@ -15,11 +15,13 @@ function SinglePoll() {
   const { pollId } = Route.useParams();
   const { poll, isPending, error } = useFetchPoll(pollId);
   const { deletePoll, isDeleting } = useDeletePoll();
+  const navigate = useNavigate();
   const isOwner = poll?.user.id === 5;
 
   const handleDeletePoll = () => {
     if (confirm("Are you sure you want to delete this poll?")) {
       deletePoll(pollId);
+      navigate({ from: "/poll/$pollId", to: "/" });
     }
   };
   return (
