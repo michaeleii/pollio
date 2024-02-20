@@ -7,7 +7,7 @@ export const Route = createLazyFileRoute("/create")({
 
 function Create() {
   return (
-    <MainWrapper className="mt-20">
+    <MainWrapper>
       <CreatePollForm />
     </MainWrapper>
   );

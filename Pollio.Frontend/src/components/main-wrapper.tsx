@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export default function MainWrapper({ className, children }: MainWrapperProps) {
   return (
-    <main className={cn("p-5 max-w-7xl mx-auto", className)}>{children}</main>
+    <main className={cn("p-5 max-w-4xl mx-auto", className)}>{children}</main>
   );
 }
 

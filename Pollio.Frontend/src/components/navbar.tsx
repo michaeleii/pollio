@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { BarChartHorizontalBig } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
   return (
@@ -12,7 +13,9 @@ export default function Navbar() {
           </div>
         </Link>
         <nav className="flex items-center gap-6">
-          <Link to="/create">Create Poll</Link>
+          <Link to="/create">
+            <Button>Create Poll</Button>
+          </Link>
         </nav>
       </div>
     </header>
