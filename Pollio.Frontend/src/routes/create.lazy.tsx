@@ -1,5 +1,5 @@
 import MainWrapper from "@/components/main-wrapper";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/create")({
   component: Create,
@@ -41,9 +41,10 @@ function CreatePollForm() {
     // Create the poll
     const newPoll = {
       question,
-      options,
+      options: options.map((opt) => opt.text),
     };
     createPoll(newPoll);
+    redirect({ to: "/" });
   }
 
   return (

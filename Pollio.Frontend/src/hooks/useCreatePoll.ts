@@ -6,7 +6,7 @@ type CreatePollSchema = {
 };
 
 export default function useCreatePoll() {
-  const { data, isPending, error } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationFn: async (poll: CreatePollSchema) => {
       const response = await fetch("/api/poll", {
         method: "POST",
@@ -18,5 +18,5 @@ export default function useCreatePoll() {
       return response.json();
     },
   });
-  return { createPoll: data, isPending, error };
+  return { createPoll: mutate, isPending, error };
 }
