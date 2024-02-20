@@ -73,21 +73,5 @@ public class VoteController(PollContext context) : ControllerBase
 
         return CreatedAtAction("GetVote", new { id = newVote.Id }, newVote);
     }
-
-    // DELETE: api/Vote/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteVote(int id)
-    {
-        var vote = await _context.Votes.FindAsync(id);
-        if (vote == null)
-        {
-            return NotFound();
-        }
-
-        _context.Votes.Remove(vote);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
 }
 
