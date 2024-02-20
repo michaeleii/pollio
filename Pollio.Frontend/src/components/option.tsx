@@ -1,17 +1,26 @@
+import useCreateVote from "@/hooks/useCreateVote";
 import { cn } from "@/lib/utils";
 import { Poll } from "@/types/types";
 import { useState } from "react";
 
 type OptionListProps = {
+  pollId: Poll["id"];
   options: Poll["options"];
   totalVotes: number;
 };
 
-export function OptionList({ options, totalVotes }: OptionListProps) {
+export function OptionList({ pollId, options, totalVotes }: OptionListProps) {
   const [selected, setSelected] = useState<number | null>(() => {
     const selected = options.find((opt) => opt.selected);
     return selected ? selected.id : null;
   });
+
+  const { makeVote } = useCreateVote();
+
+  function handleSelected(id: number | null) {
+    setSelected(id);
+    makeVote({ pollId, optionId: id });
+  }
 
   return (
     <div className="grid gap-2">
@@ -19,7 +28,7 @@ export function OptionList({ options, totalVotes }: OptionListProps) {
         <OptionItem
           totalVotes={totalVotes}
           selected={selected}
-          onSelected={setSelected}
+          onSelected={handleSelected}
           key={opt.id}
           option={opt}
         />

@@ -43,7 +43,11 @@ export function PollItem({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <OptionList totalVotes={poll.totalVotes} options={poll.options} />
+        <OptionList
+          pollId={poll.id}
+          totalVotes={poll.totalVotes}
+          options={poll.options}
+        />
       </CardContent>
       <CardFooter>
         <p className="text-sm text-muted-foreground pl-2">

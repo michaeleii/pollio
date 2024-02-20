@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
 using Pollio.Web.DTO;
 using Pollio.Web.Models;
 
@@ -12,7 +11,6 @@ public class VoteController(PollContext context) : ControllerBase
 {
     private readonly PollContext _context = context;
 
-
     // POST: api/Vote
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
@@ -23,6 +21,7 @@ public class VoteController(PollContext context) : ControllerBase
 
         // Check if the user already has a vote for this poll
         var existingVote = await _context.Votes
+            .Include(v => v.Option)
             .Where(v => v.UserId == userId && v.Option.PollId == vote.PollId)
             .FirstOrDefaultAsync();
 
@@ -30,30 +29,19 @@ public class VoteController(PollContext context) : ControllerBase
         // If the user already has a vote
         if (existingVote != null)
         {
-            // Check if the option belongs to the poll
-            if (existingVote.Option.PollId != vote.PollId)
-            {
-                return BadRequest();
-            }
 
             // If no new option was provided, remove previous vote
             if (vote.OptionId == null)
             {
                 _context.Votes.Remove(existingVote);
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok();
             }
-
             // Update the existing vote with the new option
             existingVote.OptionId = vote.OptionId.Value;
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetVote", new { id = existingVote.Id }, existingVote);
+            return Ok();
 
-        }
-
-        if (vote.OptionId == null)
-        {
-            return BadRequest();
         }
 
         // Check if the option belongs to the poll
@@ -65,13 +53,13 @@ public class VoteController(PollContext context) : ControllerBase
         }
 
         // Create a new vote
-        var newVote = new Vote { OptionId = vote.OptionId.Value, UserId = userId };
+        var newVote = new Vote { OptionId = option.Id, UserId = userId };
 
         _context.Votes.Add(newVote);
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetVote", new { id = newVote.Id }, newVote);
+        return Ok();
     }
 }
 
