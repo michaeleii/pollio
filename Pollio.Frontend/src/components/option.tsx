@@ -13,7 +13,7 @@ export function OptionList({ options }: OptionListProps) {
     <div className="grid gap-2">
       {options.map((opt) => (
         <OptionItem
-          selected={selected === opt.id}
+          selected={selected}
           onSelected={setSelected}
           key={opt.id}
           id={opt.id}
@@ -28,7 +28,7 @@ type OptionItemProps = {
   id: number;
   option: string;
   hover?: boolean;
-  selected: boolean;
+  selected: number | null;
   onSelected: (id: number | null) => void;
 };
 
@@ -39,12 +39,27 @@ export function OptionItem({
   hover = true,
   onSelected,
 }: OptionItemProps) {
-  if (selected) {
+  if (selected === id) {
     return (
       <div
         onClick={() => onSelected(null)}
         className={cn(
-          "border p-5 transition-colors cursor-pointer bg-secondary border-secondary",
+          "border p-5 transition-colors cursor-pointer border-primary bg-primary",
+          {
+            "hover:border-primary hover:border-2": hover,
+          }
+        )}
+      >
+        {option}
+      </div>
+    );
+  }
+  if (selected) {
+    return (
+      <div
+        onClick={() => onSelected(id)}
+        className={cn(
+          "border p-5 transition-colors cursor-pointer bg-secondary",
           {
             "hover:border-primary hover:border-2": hover,
           }
