@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using Pollio.Web.DTO;
 using Pollio.Web.Models;
 
@@ -85,12 +86,26 @@ public class PollController(PollContext context) : ControllerBase
     // POST: api/Poll
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Poll>> PostPoll(Poll poll)
+    public async Task<ActionResult<CreatePollDTO>> PostPoll(CreatePollDTO poll)
     {
-        _context.Polls.Add(poll);
+        var newPoll = new Poll
+        {
+            Question = poll.Question,
+            UserId = 5,
+        };
+
+        var newOptions = poll.Options
+            .Select(o => new Option { Text = o });
+
+
+        newPoll.Options.AddRange(newOptions);
+
+        _context.Polls.Add(newPoll);
+
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetPoll", new { id = poll.Id }, poll);
+
+        return CreatedAtAction("GetPoll", new { id = newPoll.Id }, poll);
     }
 
     // DELETE: api/Poll/5

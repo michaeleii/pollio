@@ -11,6 +11,7 @@ interface OptionState {
   addOption: (text: string) => void;
   updateOption: (id: number, text: string) => void;
   deleteOption: (id: number) => void;
+  resetOptions: () => void;
 }
 
 const intialOptions = [
@@ -34,4 +35,5 @@ export const useOptionStore = create<OptionState>()((set) => ({
     set((state) => ({
       options: state.options.filter((opt) => opt.id !== id),
     })),
+  resetOptions: () => set({ options: intialOptions }),
 }));
