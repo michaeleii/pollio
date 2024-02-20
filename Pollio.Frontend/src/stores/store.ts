@@ -1,6 +1,11 @@
 import { Poll } from "@/types/types";
 import { create } from "zustand";
 
+const newId = (() => {
+  let id = 0;
+  return () => id++;
+})();
+
 interface OptionState {
   options: Poll["options"];
   addOption: (text: string) => void;
@@ -9,15 +14,15 @@ interface OptionState {
 }
 
 const intialOptions = [
-  { id: 1, text: "" },
-  { id: 2, text: "" },
+  { id: newId(), text: "" },
+  { id: newId(), text: "" },
 ];
 
-export const useOptionState = create<OptionState>()((set) => ({
+export const useOptionStore = create<OptionState>()((set) => ({
   options: intialOptions,
   addOption: (text) =>
     set((state) => ({
-      options: [...state.options, { id: state.options.length + 1, text }],
+      options: [...state.options, { id: newId(), text }],
     })),
   updateOption: (id, text) =>
     set((state) => ({

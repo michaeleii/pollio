@@ -17,32 +17,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { Poll } from "@/types/types";
 import { PlusIcon, Trash2Icon } from "lucide-react";
+import { useOptionStore } from "@/stores/store";
 
 function CreatePollForm() {
   const [question, setQuestion] = useState("");
-  const [options, setOptions] = useState<Poll["options"]>([
-    { id: 1, text: "" },
-    { id: 2, text: "" },
-  ]);
-
-  const handleUpdateOption = (id: number, text: string) => {
-    setOptions((prev) =>
-      prev.map((opt) => (opt.id === id ? { ...opt, text } : opt))
-    );
-  };
-
-  const handleDeleteOption = (id: number) => {
-    setOptions((prev) => prev.filter((opt) => opt.id !== id));
-  };
-
-  const handleAddNewOption = () => {
-    setOptions((prev) => [
-      ...prev,
-      { id: prev[prev.length - 1].id + 1, text: "" },
-    ]);
-  };
   return (
     <Card>
       <form>
@@ -60,12 +39,7 @@ function CreatePollForm() {
                 className="w-full text-xl font-bold border-0 rounded-none pl-1 focus-visible:ring-0 focus-visible:border-b focus-visible:border-primary transition-colors"
               />
             </div>
-            <OptionInputList
-              options={options}
-              onAddNewOption={handleAddNewOption}
-              onUpdateOption={handleUpdateOption}
-              onDeleteOption={handleDeleteOption}
-            />
+            <OptionInputList />
             <Button className="btn">Create Poll</Button>
           </div>
         </CardContent>
@@ -74,17 +48,9 @@ function CreatePollForm() {
   );
 }
 
-function OptionInputList({
-  options,
-  onAddNewOption,
-  onUpdateOption,
-  onDeleteOption,
-}: {
-  options: Poll["options"];
-  onAddNewOption: () => void;
-  onUpdateOption: (id: number, text: string) => void;
-  onDeleteOption: (id: number) => void;
-}) {
+function OptionInputList() {
+  const options = useOptionStore((s) => s.options);
+  const addOption = useOptionStore((s) => s.addOption);
   const enableDelete = options.length > 2;
   return (
     <div className="grid gap-2 mb-4">
@@ -94,15 +60,13 @@ function OptionInputList({
           id={opt.id}
           option={opt.text}
           enableDelete={enableDelete}
-          onUpdateOption={onUpdateOption}
-          onDeleteOption={onDeleteOption}
         />
       ))}
       <Button
         type="button"
         variant="secondary"
         className="flex items-center gap-1 mt-2"
-        onClick={onAddNewOption}
+        onClick={() => addOption("")}
       >
         <PlusIcon size={16} />
         <span>Add Option</span>
@@ -115,15 +79,14 @@ function OptionInput({
   id,
   option,
   enableDelete,
-  onUpdateOption,
-  onDeleteOption,
 }: {
   id: number;
   option: string;
   enableDelete: boolean;
-  onUpdateOption: (id: number, text: string) => void;
-  onDeleteOption: (id: number) => void;
 }) {
+  const updateOption = useOptionStore((s) => s.updateOption);
+  const deleteOption = useOptionStore((s) => s.deleteOption);
+
   return (
     <div className="flex gap-2 items-center">
       <Input
@@ -131,12 +94,12 @@ function OptionInput({
         type="text"
         placeholder="Enter an option..."
         value={option}
-        onChange={(e) => onUpdateOption(id, e.target.value)}
+        onChange={(e) => updateOption(id, e.target.value)}
         className="w-full border rounded-none p-5 h-full focus-visible:ring-0 focus-visible:border-b focus-visible:border-primary transition-colors"
       />
       {enableDelete && (
         <Button
-          onClick={() => onDeleteOption(id)}
+          onClick={() => deleteOption(id)}
           type="button"
           variant="destructive"
           className="h-full"
