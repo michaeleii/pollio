@@ -19,12 +19,36 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { useOptionStore } from "@/stores/store";
+import useCreatePoll from "@/hooks/useCreatePoll";
 
 function CreatePollForm() {
   const [question, setQuestion] = useState("");
+  const options = useOptionStore((s) => s.options);
+  const { createPoll, isPending } = useCreatePoll();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    // Check if there is a question
+    if (question.trim() === "") return;
+
+    // Check if there are at least two options
+    if (options.length < 2) return;
+
+    // Make sure all options have text
+    if (options.some((opt) => opt.text.trim() === "")) return;
+
+    // Create the poll
+    const newPoll = {
+      question,
+      options,
+    };
+    createPoll(newPoll);
+  }
+
   return (
     <Card>
-      <form>
+      <form onSubmit={handleSubmit}>
         <CardContent>
           <div className="flex flex-col gap-4 pt-6">
             <div>
@@ -40,7 +64,9 @@ function CreatePollForm() {
               />
             </div>
             <OptionInputList />
-            <Button className="btn">Create Poll</Button>
+            <Button disabled={isPending} className="btn">
+              {isPending ? "Creating Poll..." : "Create Poll"}
+            </Button>
           </div>
         </CardContent>
       </form>
