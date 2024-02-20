@@ -7,7 +7,7 @@ export const Route = createLazyFileRoute("/create")({
 
 function Create() {
   return (
-    <MainWrapper>
+    <MainWrapper className="mt-20">
       <CreatePollForm />
     </MainWrapper>
   );
@@ -36,7 +36,7 @@ function CreatePollForm() {
                 name="question"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                className="w-full text-xl font-bold border-0 rounded-none pl-1 focus-visible:ring-0 focus-visible:border-b focus-visible:border-primary transition-colors"
+                className="w-full text-2xl font-semibold leading-none tracking-tight border-0 rounded-none pl-1 focus-visible:ring-0 focus-visible:border-b focus-visible:border-primary transition-colors"
               />
             </div>
             <OptionInputList />
