@@ -14,7 +14,7 @@ export function PollList({ polls }: { polls: Poll[] }) {
   return (
     <div className="grid gap-6 mb-10">
       {polls.map((poll) => (
-        <PollItem link poll={poll} />
+        <PollItem key={poll.id} link poll={poll} />
       ))}
     </div>
   );

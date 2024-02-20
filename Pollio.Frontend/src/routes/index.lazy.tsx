@@ -1,3 +1,4 @@
+import Loading from "@/components/loading";
 import MainWrapper from "@/components/main-wrapper";
 import { PollList } from "@/components/poll";
 import useFetchPolls from "@/hooks/useFetchPolls";
@@ -12,7 +13,7 @@ function Index() {
   return (
     <MainWrapper>
       {isPending ? (
-        <p>Loading...</p>
+        <Loading />
       ) : error ? (
         <p>Error: {error.message}</p>
       ) : polls ? (
