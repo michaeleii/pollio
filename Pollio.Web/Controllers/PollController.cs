@@ -35,12 +35,13 @@ public class PollController(PollContext context) : ControllerBase
                     CreatedAt = o.CreatedAt,
                 }).ToList(),
             })
+            .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
     }
 
     // GET: api/Poll/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Poll>> GetPoll(int id)
+    public async Task<ActionResult<PollDTO>> GetPoll(int id)
     {
         var poll = await _context.Polls.FindAsync(id);
 
@@ -49,7 +50,23 @@ public class PollController(PollContext context) : ControllerBase
             return NotFound();
         }
 
-        return poll;
+        return new PollDTO
+        {
+            Id = poll.Id,
+            Question = poll.Question,
+            CreatedAt = poll.CreatedAt,
+            User = new PollDTO.UserDTO
+            {
+                Id = poll.User.Id,
+                Username = poll.User.Username,
+            },
+            Options = poll.Options.Select(o => new PollDTO.OptionDTO
+            {
+                Id = o.Id,
+                Text = o.Text,
+                CreatedAt = o.CreatedAt,
+            }).ToList(),
+        };
     }
 
     // PUT: api/Poll/5
