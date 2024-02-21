@@ -1,4 +1,7 @@
-# Stage 1: Build the Vite React app
+# Adjust DOTNET_OS_VERSION as desired
+ARG DOTNET_OS_VERSION="-alpine"
+ARG DOTNET_SDK_VERSION=8.0
+
 FROM oven/bun:1 AS frontend
 WORKDIR /app
 
@@ -9,9 +12,6 @@ COPY ./Frontend/ ./Frontend
 WORKDIR ./Frontend
 RUN bun run build
 
-# Adjust DOTNET_OS_VERSION as desired
-ARG DOTNET_OS_VERSION="-alpine"
-ARG DOTNET_SDK_VERSION=8.0
 
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}${DOTNET_OS_VERSION} AS build
 WORKDIR /src
