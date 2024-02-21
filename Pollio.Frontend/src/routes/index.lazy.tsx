@@ -21,7 +21,7 @@ function Index() {
       ) : polls && polls.length > 0 ? (
         <PollList polls={polls} />
       ) : (
-        <p className="text-center text-xl">There are no polls.</p>
+        <p className="text-center text-xl">No polls were found.</p>
       )}
     </MainWrapper>
   );
