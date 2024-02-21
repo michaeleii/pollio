@@ -1,5 +1,5 @@
 import MainWrapper from "@/components/main-wrapper";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/create")({
   component: Create,
@@ -20,12 +20,21 @@ import { useState } from "react";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { useOptionStore } from "@/stores/store";
 import useCreatePoll from "@/hooks/useCreatePoll";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
 function CreatePollForm() {
+  const { user } = useKindeAuth();
+  const navigate = useNavigate();
+
   const [question, setQuestion] = useState("");
   const options = useOptionStore((s) => s.options);
   const resetOptions = useOptionStore((s) => s.resetOptions);
   const { createPoll, isPending } = useCreatePoll();
+
+  if (!user) {
+    navigate({ to: "/" });
+    return;
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,10 +48,15 @@ function CreatePollForm() {
     // Make sure all options have text
     if (options.some((opt) => opt.text.trim() === "")) return;
 
+    if (!user || !user.id) {
+      navigate({ to: "/" });
+      return;
+    }
     // Create the poll
     const newPoll = {
       question,
       options: options.map((opt) => opt.text),
+      userId: user.id,
     };
     createPoll(newPoll);
     setQuestion("");

@@ -5,6 +5,7 @@ import useSignalR from "./useSignalR";
 type CreatePollSchema = {
   question: string;
   options: string[];
+  userId: string;
 };
 
 export default function useCreatePoll() {

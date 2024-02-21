@@ -97,7 +97,7 @@ public class PollController(PollContext context) : ControllerBase
         var newPoll = new Poll
         {
             Question = poll.Question,
-            UserId = 5,
+            UserId = poll.UserId,
         };
 
         var newOptions = poll.Options
