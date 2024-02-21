@@ -9,7 +9,6 @@ export function useFetchPoll(pollId: string) {
     queryFn: async () => {
       const response = await fetch(`/api/poll/${pollId}`);
       const poll: Poll = await response.json();
-
       poll.options = poll.options.map((opt) => {
         if (!user || !user.id) return opt;
         return opt.allVotes.includes(user.id)

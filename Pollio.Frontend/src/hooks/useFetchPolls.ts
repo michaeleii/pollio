@@ -9,6 +9,7 @@ export default function useFetchPolls() {
     queryFn: async () => {
       const response = await fetch("/api/poll");
       const polls: Poll[] = await response.json();
+      if (!polls || !polls.length) return [];
       return polls.map((poll) => {
         poll.options = poll.options.map((opt) => {
           if (!user || !user.id) return opt;

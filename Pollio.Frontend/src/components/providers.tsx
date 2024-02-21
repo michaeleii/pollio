@@ -25,8 +25,8 @@ const KindeAuthProvider = ({ children }: ProvidersProps) => {
       <KindeProvider
         clientId="5b88e740d3ec47ccaf2bd331d5923f3f"
         domain="https://pollio.kinde.com"
-        redirectUri="http://localhost:5187"
-        logoutUri="http://localhost:5187"
+        redirectUri="https://pollio.fly.dev"
+        logoutUri="https://pollio.fly.dev"
         onRedirectCallback={async (user) => {
           console.log({ user });
           const newUser = {
