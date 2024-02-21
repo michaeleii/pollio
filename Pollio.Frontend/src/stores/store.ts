@@ -1,4 +1,3 @@
-import { Poll } from "@/types/types";
 import { create } from "zustand";
 
 const newId = (() => {
@@ -7,7 +6,7 @@ const newId = (() => {
 })();
 
 interface OptionState {
-  options: Poll["options"];
+  options: { id: number; text: string }[];
   addOption: (text: string) => void;
   updateOption: (id: number, text: string) => void;
   deleteOption: (id: number) => void;
