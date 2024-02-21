@@ -12,7 +12,7 @@ using Pollio.Web.Models;
 namespace Pollio.Web.Migrations
 {
     [DbContext(typeof(PollContext))]
-    [Migration("20240221064106_InitialCreate")]
+    [Migration("20240221191639_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

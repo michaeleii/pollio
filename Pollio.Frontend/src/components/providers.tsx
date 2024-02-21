@@ -19,7 +19,38 @@ const TanStackRouterDevtools =
         }))
       );
 
-export default function Providers({ children }: ProvidersProps) {
+const KindeAuthProvider = ({ children }: ProvidersProps) => {
+  if (process.env.NODE_ENV === "production") {
+    return (
+      <KindeProvider
+        clientId="5b88e740d3ec47ccaf2bd331d5923f3f"
+        domain="https://pollio.kinde.com"
+        redirectUri="http://localhost:5187"
+        logoutUri="http://localhost:5187"
+        onRedirectCallback={async (user) => {
+          console.log({ user });
+          const newUser = {
+            id: user.id,
+            avatar:
+              user.picture ??
+              "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            email: user.email,
+            name: user.given_name,
+            lastName: user.family_name,
+          };
+          await fetch("/api/auth", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+          });
+        }}
+      >
+        {children}
+      </KindeProvider>
+    );
+  }
   return (
     <KindeProvider
       clientId="8877ae653ef445e5802665e218a30f98"
@@ -46,6 +77,14 @@ export default function Providers({ children }: ProvidersProps) {
         });
       }}
     >
+      {children}
+    </KindeProvider>
+  );
+};
+
+export default function Providers({ children }: ProvidersProps) {
+  return (
+    <KindeAuthProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           {children}
@@ -55,7 +94,7 @@ export default function Providers({ children }: ProvidersProps) {
         </Suspense>
         <ReactQueryDevtools />
       </QueryClientProvider>
-    </KindeProvider>
+    </KindeAuthProvider>
   );
 }
 
