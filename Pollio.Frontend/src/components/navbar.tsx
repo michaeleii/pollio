@@ -53,14 +53,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-type KindeUser = {
-  given_name: string | null;
-  id: string | null;
-  family_name: string | null;
-  email: string | null;
-  picture: string | null;
-};
 import useSignalR from "@/hooks/useSignalR";
+import { KindeUser } from "@/types/types";
+
 function Profile({ user }: { user: KindeUser }) {
   const { connection } = useSignalR("/r/pollhub");
   const { logout } = useKindeAuth();

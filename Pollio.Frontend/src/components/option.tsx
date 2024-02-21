@@ -1,6 +1,7 @@
 import useCreateVote from "@/hooks/useCreateVote";
 import { cn } from "@/lib/utils";
 import { Poll } from "@/types/types";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useEffect, useState } from "react";
 
 type OptionListProps = {
@@ -11,17 +12,21 @@ type OptionListProps = {
 
 export function OptionList({ pollId, options, totalVotes }: OptionListProps) {
   const [selected, setSelected] = useState<number | null>(null);
+  const { user, login } = useKindeAuth();
+  const { makeVote } = useCreateVote();
 
   useEffect(() => {
     const selected = options.find((opt) => opt.selected);
     setSelected(selected ? selected.id : null);
   }, [options]);
 
-  const { makeVote } = useCreateVote();
-
   async function handleSelected(id: number | null) {
+    if (!user || !user.id) {
+      login();
+      return;
+    }
     setSelected(id);
-    makeVote({ pollId, optionId: id });
+    makeVote({ pollId, optionId: id, userId: user.id });
   }
 
   return (

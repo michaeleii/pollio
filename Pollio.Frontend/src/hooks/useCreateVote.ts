@@ -4,6 +4,7 @@ import useSignalR from "./useSignalR";
 type CreateVoteSchema = {
   pollId: number;
   optionId: number | null;
+  userId: string;
 };
 
 export default function useCreateVote() {

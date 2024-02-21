@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import useDeletePoll from "@/hooks/useDeletePoll";
 import { useFetchPoll } from "@/hooks/useFetchPoll";
 import useInvalidatePolls from "@/hooks/useInvalidatePolls";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 
@@ -16,7 +17,10 @@ function SinglePoll() {
   const { pollId } = Route.useParams();
   const { poll, isPending, error } = useFetchPoll(pollId);
   const { deletePoll, isDeleting } = useDeletePoll();
-  const isOwner = poll?.user.id === 5;
+  const { user } = useKindeAuth();
+
+  const isOwner = poll?.user.id === user?.id;
+
   useInvalidatePolls();
 
   const handleDeletePoll = () => {
