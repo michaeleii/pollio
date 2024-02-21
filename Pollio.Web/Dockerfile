@@ -7,6 +7,13 @@ WORKDIR /src
 
 # copy everything
 COPY . ./
+
+# build vite app
+RUN cd Pollio.Web/Frontend && bun install && bun run build
+
+# rename dist to wwwroot to be served by asp.net
+RUN mv Pollio.Web/Frontend/dist Pollio.Web/wwwroot
+
 # restore as distinct layers
 RUN dotnet restore
 # build and publish a release
