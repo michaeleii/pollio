@@ -18,9 +18,11 @@ function Index() {
         <Loading />
       ) : error ? (
         <p>Error: {error.message}</p>
-      ) : polls ? (
+      ) : polls && polls.length > 0 ? (
         <PollList polls={polls} />
-      ) : null}
+      ) : (
+        <p className="text-center text-xl">No Polls Found.</p>
+      )}
     </MainWrapper>
   );
 }

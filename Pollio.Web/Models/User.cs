@@ -5,9 +5,11 @@ namespace Pollio.Web.Models;
 public class User
 {
     [Key]
-    public int Id { get; set; }
-    public string Username { get; set; } = null!;
-    public string Password { get; set; } = null!;
+    public string Id { get; set; } = null!;
+    public string Avatar { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Name { get; set; } = null!;
+    public string LastName { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public virtual ICollection<Poll> Polls { get; set; } = [];
     public virtual ICollection<Vote> Votes { get; set; } = [];

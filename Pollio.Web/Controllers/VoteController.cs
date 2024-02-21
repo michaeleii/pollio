@@ -17,12 +17,11 @@ public class VoteController(PollContext context) : ControllerBase
     public async Task<ActionResult<Vote>> PostVote(CreateVoteDTO vote)
     {
 
-        int userId = 5;
 
         // Check if the user already has a vote for this poll
         var existingVote = await _context.Votes
             .Include(v => v.Option)
-            .Where(v => v.UserId == userId && v.Option.PollId == vote.PollId)
+            .Where(v => v.UserId == vote.UserId && v.Option.PollId == vote.PollId)
             .FirstOrDefaultAsync();
 
 
@@ -53,7 +52,7 @@ public class VoteController(PollContext context) : ControllerBase
         }
 
         // Create a new vote
-        var newVote = new Vote { OptionId = option.Id, UserId = userId };
+        var newVote = new Vote { OptionId = option.Id, UserId = vote.UserId };
 
         _context.Votes.Add(newVote);
 

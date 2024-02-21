@@ -4,8 +4,6 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Pollio.Web.Migrations
 {
     /// <inheritdoc />
@@ -18,10 +16,11 @@ namespace Pollio.Web.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Username = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Avatar = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
                 },
                 constraints: table =>
@@ -37,7 +36,7 @@ namespace Pollio.Web.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Question = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,9 +76,9 @@ namespace Pollio.Web.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
                     OptionId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,64 +95,6 @@ namespace Pollio.Web.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Password", "Username" },
-                values: new object[,]
-                {
-                    { 1, "password123$", "johndoe" },
-                    { 2, "password123$", "janedoe" },
-                    { 3, "password123$", "scottchen" },
-                    { 4, "password123$", "jerryfan" },
-                    { 5, "password123$", "michaellei" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Polls",
-                columns: new[] { "Id", "Question", "UserId" },
-                values: new object[,]
-                {
-                    { 1, "Favorite Color?", 1 },
-                    { 2, "Best Programming Language?", 2 },
-                    { 3, "Favorite Movie?", 3 },
-                    { 4, "Preferred Vacation Destination?", 4 },
-                    { 5, "Favorite Food?", 5 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Options",
-                columns: new[] { "Id", "PollId", "Text" },
-                values: new object[,]
-                {
-                    { 1, 1, "Red" },
-                    { 2, 1, "Blue" },
-                    { 3, 2, "C#" },
-                    { 4, 2, "Python" },
-                    { 5, 3, "Action" },
-                    { 6, 3, "Comedy" },
-                    { 7, 4, "Beach" },
-                    { 8, 4, "Mountains" },
-                    { 9, 5, "Pizza" },
-                    { 10, 5, "Sushi" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Votes",
-                columns: new[] { "Id", "OptionId", "UserId" },
-                values: new object[,]
-                {
-                    { 1, 1, 1 },
-                    { 2, 1, 2 },
-                    { 3, 2, 3 },
-                    { 4, 2, 4 },
-                    { 5, 3, 5 },
-                    { 6, 3, 1 },
-                    { 7, 4, 2 },
-                    { 8, 4, 3 },
-                    { 9, 5, 4 },
-                    { 10, 5, 5 }
                 });
 
             migrationBuilder.CreateIndex(

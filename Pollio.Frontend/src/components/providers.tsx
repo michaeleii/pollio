@@ -26,6 +26,22 @@ export default function Providers({ children }: ProvidersProps) {
       domain="https://pollio-dev.us.kinde.com"
       redirectUri="http://localhost:5173"
       logoutUri="http://localhost:5173"
+      onRedirectCallback={async (user) => {
+        const newUser = {
+          id: user.id,
+          avatar: user.picture,
+          email: user.email,
+          name: user.given_name,
+          lastName: user.family_name,
+        };
+        await fetch("/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        });
+      }}
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

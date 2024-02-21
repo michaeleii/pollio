@@ -14,6 +14,5 @@ public class PollContext(DbContextOptions<PollContext> options) : DbContext(opti
     {
         modelBuilder.SetDefaultDate();
         modelBuilder.ConfigureRelationships();
-        modelBuilder.SeedDatabase();
     }
 }
