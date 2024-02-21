@@ -7,10 +7,10 @@ DotNetEnv.Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
 
@@ -37,6 +37,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-app.MapHub<PollHub>("/r/pollHub");
+app.MapHub<PollHub>("/r/pollhub");
 
 app.Run();

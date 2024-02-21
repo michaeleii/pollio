@@ -3,8 +3,12 @@ namespace Pollio.Web.Hubs;
 
 public class PollHub : Hub
 {
-    public async Task SendPoll(int pollId)
+    public async Task SendPoll()
     {
-        await Clients.All.SendAsync("ReceivePoll", pollId);
+        await Clients.All.SendAsync("InvalidatePolls");
+    }
+    public async Task SendVote()
+    {
+        await Clients.All.SendAsync("InvalidatePolls");
     }
 }

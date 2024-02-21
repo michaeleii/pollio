@@ -1,5 +1,5 @@
 import MainWrapper from "@/components/main-wrapper";
-import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/create")({
   component: Create,
@@ -26,7 +26,6 @@ function CreatePollForm() {
   const options = useOptionStore((s) => s.options);
   const resetOptions = useOptionStore((s) => s.resetOptions);
   const { createPoll, isPending } = useCreatePoll();
-  const navigate = useNavigate();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,7 +46,6 @@ function CreatePollForm() {
     };
     createPoll(newPoll);
     setQuestion("");
-    navigate({ from: "/create", to: "/" });
     resetOptions();
   }
 

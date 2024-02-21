@@ -3,13 +3,15 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 
+const ASPNETCORE_API_URL = "http://localhost:5187";
+
 export default defineConfig({
   plugins: [react(), TanStackRouterVite()],
   server: {
     proxy: {
-      "/api": "http://localhost:5187",
+      "/api": ASPNETCORE_API_URL,
       "/r": {
-        target: "http://localhost:5187",
+        target: ASPNETCORE_API_URL,
         ws: true,
       },
     },
