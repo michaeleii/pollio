@@ -23,5 +23,6 @@ export default defineConfig({
   },
   build: {
     outDir: path.resolve(__dirname, "../Pollio.Web/wwwroot"),
+    emptyOutDir: true,
   },
 });
