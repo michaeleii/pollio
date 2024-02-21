@@ -4,6 +4,8 @@ import { Button } from "./ui/button";
 import { ModeToggle } from "./mode-toggle";
 
 export default function Navbar() {
+  const { user } = useKindeAuth();
+
   return (
     <header className="p-4 shadow-md mb-6 sticky top-0 bg-background z-20">
       <div className="max-w-7xl mx-auto flex gap-2 items-center justify-between">
@@ -14,32 +16,64 @@ export default function Navbar() {
           </div>
         </Link>
         <nav className="flex items-center gap-6">
-          <Link to="/create">
-            <Button>Create Poll</Button>
-          </Link>
-          <Profile />
+          {user ? (
+            <>
+              <Link to="/create">
+                <Button>Create Poll</Button>
+              </Link>
+              <Profile user={user} />
+            </>
+          ) : (
+            <AuthButtons />
+          )}
           <ModeToggle />
         </nav>
       </div>
     </header>
   );
 }
+
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+function AuthButtons() {
+  const { login, register } = useKindeAuth();
+  return (
+    <div className="flex items-center gap-2">
+      <Button onClick={() => register()}>Sign Up</Button>
+      <Button onClick={() => login()}>Login</Button>
+    </div>
+  );
+}
+
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+type KindeUser = {
+  given_name: string | null;
+  id: string | null;
+  family_name: string | null;
+  email: string | null;
+  picture: string | null;
+};
 import useSignalR from "@/hooks/useSignalR";
-function Profile() {
+function Profile({ user }: { user: KindeUser }) {
   const { connection } = useSignalR("/r/pollhub");
+  const { logout } = useKindeAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="flex items-center gap-2 relative">
           <img
-            src="https://avatars.githubusercontent.com/u/57844588?v=4"
-            alt="michaellei"
+            src={
+              user.picture ??
+              "https://avatars.githubusercontent.com/u/57844588?v=4"
+            }
+            alt={user.given_name ?? "User"}
             className="w-10 h-10 rounded-full"
           />
           {connection ? (
@@ -57,7 +91,7 @@ function Profile() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel className="flex flex-col">
-          <span>michaellei</span>
+          <span>{user.given_name}</span>
           <span className="font-medium">
             {connection ? (
               <span className="text-green-600">Online</span>
@@ -66,9 +100,10 @@ function Profile() {
             )}
           </span>
         </DropdownMenuLabel>
-        {/* <DropdownMenuSeparator /> */}
-        {/* <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem> */}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="cursor-pointer" onClick={() => logout()}>
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

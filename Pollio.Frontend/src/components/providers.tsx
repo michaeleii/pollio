@@ -22,8 +22,8 @@ const TanStackRouterDevtools =
 export default function Providers({ children }: ProvidersProps) {
   return (
     <KindeProvider
-      clientId="5b88e740d3ec47ccaf2bd331d5923f3f"
-      domain="https://pollio.kinde.com"
+      clientId="8877ae653ef445e5802665e218a30f98"
+      domain="https://pollio-dev.us.kinde.com"
       redirectUri="http://localhost:5173"
       logoutUri="http://localhost:5173"
     >
