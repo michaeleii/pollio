@@ -14,7 +14,7 @@ public class PollController(PollContext context) : ControllerBase
 
     // GET: api/Poll
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PollDTO>>> GetPolls(string userId)
+    public async Task<ActionResult<IEnumerable<PollDTO>>> GetPolls()
     {
         return await _context.Polls
             .Include(p => p.User)
@@ -32,13 +32,15 @@ public class PollController(PollContext context) : ControllerBase
 
                 TotalVotes = p.Options.Sum(o => o.Votes.Count),
 
+
+
                 Options = p.Options.Select(o => new PollDTO.OptionDTO
                 {
                     Id = o.Id,
                     Text = o.Text,
                     CreatedAt = o.CreatedAt,
+                    AllVotes = o.Votes.Select(v => v.UserId).ToList(),
                     Votes = o.Votes.Count,
-                    Selected = o.Votes.Any(v => v.UserId == userId && v.OptionId == o.Id),
                 })
                 .OrderBy(o => o.Id)
                 .ToList(),
@@ -50,7 +52,7 @@ public class PollController(PollContext context) : ControllerBase
 
     // GET: api/Poll/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<PollDTO>> GetPoll(int id, string userId)
+    public async Task<ActionResult<PollDTO>> GetPoll(int id)
     {
         var poll = await _context.Polls
                         .Include(p => p.User)
@@ -74,7 +76,7 @@ public class PollController(PollContext context) : ControllerBase
                                 Text = o.Text,
                                 CreatedAt = o.CreatedAt,
                                 Votes = o.Votes.Count,
-                                Selected = o.Votes.Any(v => v.UserId == userId && v.OptionId == o.Id),
+                                AllVotes = o.Votes.Select(v => v.UserId).ToList(),
                             })
                             .OrderBy(o => o.Id)
                             .ToList(),

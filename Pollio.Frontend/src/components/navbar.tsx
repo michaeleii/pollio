@@ -66,7 +66,7 @@ function Profile({ user }: { user: KindeUser }) {
           <img
             src={
               user.picture ??
-              "https://avatars.githubusercontent.com/u/57844588?v=4"
+              "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
             }
             alt={user.given_name ?? "User"}
             className="w-10 h-10 rounded-full"

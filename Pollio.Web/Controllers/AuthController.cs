@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Pollio.Web.DTO;
 using Pollio.Web.Models;
 
 namespace Pollio.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController(PollContext context) : ControllerBase
+public class AuthController(PollContext context) : ControllerBase
 {
     private readonly PollContext _context = context;
     public class RegisterUserDTO
@@ -24,7 +23,7 @@ public class UserController(PollContext context) : ControllerBase
     public async Task<ActionResult> Register(RegisterUserDTO registerUser)
     {
         // Check if user exists
-        var existingUser = await _context.Users.Where(u => registerUser.Id == u.Id).FirstAsync();
+        var existingUser = await _context.Users.Where(u => registerUser.Id == u.Id).FirstOrDefaultAsync();
 
         // If user exists, return
         if (existingUser is not null)

@@ -43,7 +43,7 @@ export function PollItem({
           <CardTitle>{poll.question}</CardTitle>
         )}
         <CardDescription>
-          {poll.user.username} • {formatDate(poll.createdAt)}
+          {poll.user.name} • {formatDate(poll.createdAt)}
         </CardDescription>
       </CardHeader>
       <CardContent>

@@ -3,17 +3,21 @@ export interface Poll {
   question: string;
   totalVotes: number;
   createdAt: string;
-  user: {
-    id: number;
-    username: string;
-    createdAt: string;
-  };
+  user: User;
   options: {
     id: number;
     text: string;
     selected: boolean;
     votes: number;
+    allVotes: string[];
   }[];
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
 }
 
 export type KindeUser = {

@@ -18,6 +18,8 @@ public class PollDTO
         public DateTime CreatedAt { get; set; }
         public int Votes { get; set; }
 
+        public List<string> AllVotes { get; set; } = [];
+
         public bool Selected { get; set; }
     }
 }

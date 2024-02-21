@@ -27,14 +27,17 @@ export default function Providers({ children }: ProvidersProps) {
       redirectUri="http://localhost:5173"
       logoutUri="http://localhost:5173"
       onRedirectCallback={async (user) => {
+        console.log({ user });
         const newUser = {
           id: user.id,
-          avatar: user.picture,
+          avatar:
+            user.picture ??
+            "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
           email: user.email,
           name: user.given_name,
           lastName: user.family_name,
         };
-        await fetch("/api/auth/register", {
+        await fetch("/api/auth", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
