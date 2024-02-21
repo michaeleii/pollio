@@ -39,4 +39,8 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapHub<PollHub>("/r/pollhub");
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.MapFallbackToFile("index.html");
+
 app.Run();
