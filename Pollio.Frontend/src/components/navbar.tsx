@@ -91,7 +91,7 @@ function Profile({ user }: { user: KindeUser }) {
             {connection ? (
               <span className="text-green-600">Online</span>
             ) : (
-              <span className="text-red-600">Connecting...</span>
+              <span className="text-yellow-600">Connecting...</span>
             )}
           </span>
         </DropdownMenuLabel>
