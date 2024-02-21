@@ -1,3 +1,14 @@
+# Stage 1: Build the Vite React app
+FROM oven/bun:1 AS frontend
+WORKDIR /app
+
+COPY package*.json ./
+RUN bun install
+
+COPY ./Frontend/ ./Frontend
+WORKDIR ./Frontend
+RUN bun run build
+
 # Adjust DOTNET_OS_VERSION as desired
 ARG DOTNET_OS_VERSION="-alpine"
 ARG DOTNET_SDK_VERSION=8.0
@@ -7,12 +18,6 @@ WORKDIR /src
 
 # copy everything
 COPY . ./
-
-# build vite app
-RUN cd Pollio.Web/Frontend && bun install && bun run build
-
-# rename dist to wwwroot to be served by asp.net
-RUN mv Pollio.Web/Frontend/dist Pollio.Web/wwwroot
 
 # restore as distinct layers
 RUN dotnet restore
