@@ -1,5 +1,5 @@
 # Pollio: Real-Time Polling for Dynamic Engagement
-Get ready to instantly engage your audience with interactive polls and gain actionable insights with Pollio, an open-source, real-time polling application. Create diverse polls with text, images, or even custom media, witness votes update live on all devices, and unlock clear data visualizations that bring results to life. Pollio is your one-stop solution for crafting engaging experiences and gathering valuable feedback.
+Get ready to instantly engage your audience with interactive polls and gain actionable insights with Pollio, an open-source, real-time polling application.
 
 ## Key Features:
 
