@@ -1,4 +1,4 @@
-import{f as c,g as r,r as o,c as n}from"./index-BX2xYq1d.js";function i(u){const{navigate:e}=c(),s=r({strict:!1,select:t=>t.pathname});return o.useCallback(({from:t,...a})=>e({from:a!=null&&a.to?s:void 0,...a}),[])}/**
+import{f as c,g as r,r as o,c as n}from"./index-DCQ24cXF.js";function i(u){const{navigate:e}=c(),s=r({strict:!1,select:t=>t.pathname});return o.useCallback(({from:t,...a})=>e({from:a!=null&&a.to?s:void 0,...a}),[])}/**
  * @license lucide-react v0.331.0 - ISC
  *
  * This source code is licensed under the ISC license.
