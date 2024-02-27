@@ -16,7 +16,10 @@ public static class EntityExtensions
 
             TotalVotes = p.Options.Sum(o => o.Votes.Count),
 
-            Options = p.Options.Select(o => o.ToDTO()).OrderBy(o => o.Id).ToList(),
+            Options = p.Options
+                .OrderBy(o => o.Id)
+                .Select(o => o.ToDTO())
+                .ToList(),
         };
     }
 
@@ -36,8 +39,8 @@ public static class EntityExtensions
             Id = o.Id,
             Text = o.Text,
             CreatedAt = o.CreatedAt,
-            AllVotes = o.Votes.Select(v => v.UserId).ToList(),
             Votes = o.Votes.Count,
+            AllVotes = o.Votes.Select(v => v.UserId).ToList(),
         };
     }
 }

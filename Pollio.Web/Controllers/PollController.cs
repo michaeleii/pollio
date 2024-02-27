@@ -19,7 +19,22 @@ public class PollController(PollContext context) : ControllerBase
         return await _context.Polls
             .Include(p => p.User)
             .OrderByDescending(p => p.CreatedAt)
-            .Select(p => p.ToDTO())
+            .Select(p => new PollDTO
+            {
+                Id = p.Id,
+                Question = p.Question,
+                CreatedAt = p.CreatedAt,
+
+                User = p.User.ToDTO(),
+
+                TotalVotes = p.Options.Sum(o => o.Votes.Count),
+
+                Options = p.Options
+                .OrderBy(o => o.Id)
+                .Select(o => o.ToDTO())
+                .ToList(),
+
+            })
             .ToListAsync();
     }
 
@@ -30,7 +45,22 @@ public class PollController(PollContext context) : ControllerBase
         var poll = await _context.Polls
                         .Include(p => p.User)
                         .Where(p => p.Id == id)
-                        .Select(p => p.ToDTO())
+                        .Select(p => new PollDTO
+                        {
+                            Id = p.Id,
+                            Question = p.Question,
+                            CreatedAt = p.CreatedAt,
+
+                            User = p.User.ToDTO(),
+
+                            TotalVotes = p.Options.Sum(o => o.Votes.Count),
+
+                            Options = p.Options
+                                    .OrderBy(o => o.Id)
+                                    .Select(o => o.ToDTO())
+                                    .ToList(),
+
+                        })
                         .FirstOrDefaultAsync();
 
         if (poll == null)
