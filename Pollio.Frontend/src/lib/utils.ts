@@ -11,3 +11,12 @@ export function formatDate(date: string) {
     addSuffix: true,
   });
 }
+
+export function formatNumber(num: number) {
+  if (num.toString().includes(".")) {
+    // Use toFixed(1) to round and format to string with one decimal place.
+    return num.toFixed(1);
+  }
+  // If not, simply return the number as is.
+  return num;
+}

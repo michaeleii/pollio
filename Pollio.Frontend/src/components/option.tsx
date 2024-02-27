@@ -1,5 +1,5 @@
 import useCreateVote from "@/hooks/useCreateVote";
-import { cn } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 import { Poll } from "@/types/types";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useEffect, useState } from "react";
@@ -73,7 +73,7 @@ export function OptionItem({
       >
         <div className="z-10 relative flex items-center justify-between">
           <span>{option.text}</span>
-          <span>{width.toFixed(1)}%</span>
+          <span>{formatNumber(width)}%</span>
         </div>
         <div
           className="absolute top-0 left-0 w-full h-full bg-primary/20 z-0 transition-all"
@@ -98,7 +98,7 @@ export function OptionItem({
       >
         <div className="z-10 relative flex items-center justify-between">
           <span>{option.text}</span>
-          <span>{width}%</span>
+          <span>{formatNumber(width)}%</span>
         </div>
         <div
           className="absolute top-0 left-0 w-full h-full bg-secondary z-0 transition-all"
