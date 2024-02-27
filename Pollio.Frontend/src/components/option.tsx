@@ -73,7 +73,7 @@ export function OptionItem({
       >
         <div className="z-10 relative flex items-center justify-between">
           <span>{option.text}</span>
-          <span>{width}%</span>
+          <span>{width.toFixed(1)}%</span>
         </div>
         <div
           className="absolute top-0 left-0 w-full h-full bg-primary/20 z-0 transition-all"
