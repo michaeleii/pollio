@@ -18,35 +18,8 @@ public class PollController(PollContext context) : ControllerBase
     {
         return await _context.Polls
             .Include(p => p.User)
-            .Select(p => new PollDTO
-            {
-                Id = p.Id,
-                Question = p.Question,
-                CreatedAt = p.CreatedAt,
-
-                User = new UserDTO
-                {
-                    Id = p.User.Id,
-                    Name = p.User.Name,
-                },
-
-                TotalVotes = p.Options.Sum(o => o.Votes.Count),
-
-
-
-                Options = p.Options.Select(o => new PollDTO.OptionDTO
-                {
-                    Id = o.Id,
-                    Text = o.Text,
-                    CreatedAt = o.CreatedAt,
-                    AllVotes = o.Votes.Select(v => v.UserId).ToList(),
-                    Votes = o.Votes.Count,
-                })
-                .OrderBy(o => o.Id)
-                .ToList(),
-
-            })
             .OrderByDescending(p => p.CreatedAt)
+            .Select(p => p.ToDTO())
             .ToListAsync();
     }
 
@@ -56,32 +29,9 @@ public class PollController(PollContext context) : ControllerBase
     {
         var poll = await _context.Polls
                         .Include(p => p.User)
-                        .Select(p => new PollDTO
-                        {
-                            Id = p.Id,
-                            Question = p.Question,
-                            CreatedAt = p.CreatedAt,
-
-                            User = new UserDTO
-                            {
-                                Id = p.User.Id,
-                                Name = p.User.Name,
-                            },
-
-                            TotalVotes = p.Options.Sum(o => o.Votes.Count),
-
-                            Options = p.Options.Select(o => new PollDTO.OptionDTO
-                            {
-                                Id = o.Id,
-                                Text = o.Text,
-                                CreatedAt = o.CreatedAt,
-                                Votes = o.Votes.Count,
-                                AllVotes = o.Votes.Select(v => v.UserId).ToList(),
-                            })
-                            .OrderBy(o => o.Id)
-                            .ToList(),
-
-                        }).Where(p => p.Id == id).FirstOrDefaultAsync();
+                        .Where(p => p.Id == id)
+                        .Select(p => p.ToDTO())
+                        .FirstOrDefaultAsync();
 
         if (poll == null)
         {
