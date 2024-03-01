@@ -1,4 +1,6 @@
-# Pollio
+<p align="center">
+  <img src="https://github.com/michaeleii/pollio/assets/57844588/0aa8bd24-6460-4c81-bf95-068ab0c4e4ed" width="100%"/>
+</p>
 Get ready to instantly engage your audience with interactive polls and gain actionable insights with Pollio, an open-source, real-time polling application.
 
 
