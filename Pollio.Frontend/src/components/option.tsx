@@ -65,18 +65,18 @@ export function OptionItem({
       <div
         onClick={() => onSelected(null)}
         className={cn(
-          "border p-5 transition-colors cursor-pointer border-primary bg-transparent relative z-10",
+          "border p-5 transition-colors cursor-pointer bg-transparent relative z-10",
           {
             "hover:border-primary hover:border-2": hover,
           }
         )}
       >
-        <div className="z-10 relative flex items-center justify-between">
-          <span>{option.text}</span>
+        <div className="z-10 relative flex items-center justify-between ">
+          <span className="text-white">{option.text}</span>
           <span>{formatNumber(width)}%</span>
         </div>
         <div
-          className="absolute top-0 left-0 w-full h-full bg-primary/20 z-0 transition-all"
+          className="absolute top-0 left-0 w-full h-full bg-primary/80 z-0 transition-all"
           style={{
             width: `${width}%`,
             transform: `translateX(${selected === option.id ? 0 : 100}%)`,
