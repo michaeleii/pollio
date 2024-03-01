@@ -14,7 +14,7 @@ export default function Navbar() {
             <div className="flex items-center justify-center p-2 bg-gradient-to-br from-primary to-purple-500 rounded-lg">
               <BarChartHorizontalBig className="stroke-white" />
             </div>
-            <span className="text-xl">Pollio</span>
+            <span className="text-xl font-bold">Pollio</span>
           </div>
         </Link>
         <nav className="flex items-center gap-6">

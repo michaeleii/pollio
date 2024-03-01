@@ -101,7 +101,7 @@ export function OptionItem({
           <span>{formatNumber(width)}%</span>
         </div>
         <div
-          className="absolute top-0 left-0 w-full h-full bg-secondary z-0 transition-all"
+          className="absolute top-0 left-0 w-full h-full dark:bg-secondary bg-gray-200 z-0 transition-all"
           style={{
             width: `${width}%`,
           }}
