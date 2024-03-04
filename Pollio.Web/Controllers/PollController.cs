@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using Pollio.Web.DTO;
+using Pollio.Web.Hubs;
 using Pollio.Web.Models;
 
 namespace Pollio.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PollController(PollContext context) : ControllerBase
+public class PollController(PollContext context, IHubContext<PollHub> hub) : ControllerBase
 {
     private readonly PollContext _context = context;
+    private readonly IHubContext<PollHub> _hub = hub;
 
     // GET: api/Poll
     [HttpGet]
@@ -112,6 +115,8 @@ public class PollController(PollContext context) : ControllerBase
 
         await _context.SaveChangesAsync();
 
+        await _hub.Clients.All.SendAsync("InvalidatePolls");
+
         return CreatedAtAction("GetPoll", new { id = newPoll.Id }, poll);
     }
 
@@ -127,6 +132,8 @@ public class PollController(PollContext context) : ControllerBase
 
         _context.Polls.Remove(poll);
         await _context.SaveChangesAsync();
+
+        await _hub.Clients.All.SendAsync("InvalidatePolls");
 
         return NoContent();
     }

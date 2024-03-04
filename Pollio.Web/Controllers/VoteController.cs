@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Pollio.Web.DTO;
+using Pollio.Web.Hubs;
 using Pollio.Web.Models;
 
 namespace Pollio.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class VoteController(PollContext context) : ControllerBase
+public class VoteController(PollContext context, IHubContext<PollHub> hub) : ControllerBase
 {
     private readonly PollContext _context = context;
+    private readonly IHubContext<PollHub> _hub = hub;
 
     // POST: api/Vote
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -34,11 +37,13 @@ public class VoteController(PollContext context) : ControllerBase
             {
                 _context.Votes.Remove(existingVote);
                 await _context.SaveChangesAsync();
+                await _hub.Clients.All.SendAsync("InvalidatePolls");
                 return Ok();
             }
             // Update the existing vote with the new option
             existingVote.OptionId = vote.OptionId.Value;
             await _context.SaveChangesAsync();
+            await _hub.Clients.All.SendAsync("InvalidatePolls");
             return Ok();
 
         }
@@ -57,6 +62,8 @@ public class VoteController(PollContext context) : ControllerBase
         _context.Votes.Add(newVote);
 
         await _context.SaveChangesAsync();
+
+        await _hub.Clients.All.SendAsync("InvalidatePolls");
 
         return Ok();
     }
